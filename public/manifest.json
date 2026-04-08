@@ -1,0 +1,37 @@
+{
+  "name": "岸信 Shore Letter",
+  "short_name": "岸信",
+  "description": "写给陌生人，让潮水决定。Write to a stranger. Let the tide decide.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f0e8",
+  "theme_color": "#1a2e3b",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "zh",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/write.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "label": "写一封信"
+    }
+  ],
+  "categories": ["social", "lifestyle"],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

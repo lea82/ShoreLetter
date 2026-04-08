@@ -1,0 +1,84 @@
+{
+  "app": {
+    "name": "岸信",
+    "tagline": "写给陌生人，让潮水决定。",
+    "description": "一封信，漂向未知。某人在海的另一边，正在等待。"
+  },
+  "nav": {
+    "write": "写信",
+    "inbox": "信箱",
+    "correspondence": "通信",
+    "profile": "我的"
+  },
+  "auth": {
+    "signIn": "登录",
+    "signOut": "退出",
+    "emailLabel": "邮箱",
+    "emailPlaceholder": "你的邮箱地址",
+    "sendMagicLink": "发送登录链接",
+    "checkEmail": "请查收邮件，点击链接登录。",
+    "orContinueWith": "或者",
+    "createAlias": "选择你的笔名",
+    "aliasPlaceholder": "晨雾里的人",
+    "aliasHint": "这是别人看到你的名字，不必是真名。",
+    "uploadAvatar": "上传头像（可选）",
+    "avatarHint": "宠物、风景、物品，任何能代表你的图片。",
+    "continue": "继续"
+  },
+  "bottle": {
+    "write": "写一封信",
+    "promptLabel": "今日提示",
+    "promptSkip": "跳过提示",
+    "contentPlaceholder": "从这里开始写……",
+    "modeLabel": "漂流方式",
+    "modeDrift": "随机漂流",
+    "modeDriftDesc": "让海浪决定",
+    "modeWednesday": "星期三潮汐",
+    "modeWednesdayDesc": "本周三晚8点统一配对",
+    "release": "放漂这封信",
+    "releasing": "放漂中……",
+    "released": "你的信漂出去了。",
+    "releasedSub": "有人找到它时，我们会通知你。",
+    "charCount": "{count} 字",
+    "minChars": "至少写 {min} 个字"
+  },
+  "inbox": {
+    "title": "信箱",
+    "empty": "海岸今晚很安静。\n写第一封信吧。",
+    "newBottle": "新的信漂来了",
+    "aiKeeping": "AI伴侣 · 等待中",
+    "aiKeepingDesc": "你的信还在漂流，暂由AI陪你聊。",
+    "wednesdayBanner": "星期三潮汐",
+    "wednesdayTime": "今晚8点，新的信漂来",
+    "wednesdayCountdown": "{hours} 小时后"
+  },
+  "correspondence": {
+    "days": "通信 {days} 天",
+    "letters": "{count} 封信",
+    "replyPlaceholder": "写回信……",
+    "send": "发送",
+    "seal": "封存这段通信",
+    "sealConfirm": "封存后不可继续回信，但信件永久保存。确认封存吗？",
+    "sealed": "已封存",
+    "syncUnlocked": "实时对话已解锁",
+    "voiceRequest": "邀请语音通话",
+    "giftSend": "送一份小礼物",
+    "anniversary30": "你们已经通信30天了 🎉",
+    "anniversary60": "60天的信缘 ✨",
+    "anniversary90": "90天，三个月的相知 💛"
+  },
+  "safety": {
+    "crisisTitle": "需要帮助吗？",
+    "crisisBody": "如果你正在经历困难，请联系专业帮助。",
+    "crisisLine": "北京心理危机研究与干预中心：010-82951332",
+    "crisisLineUS": "美国心理援助热线（中文）：1-888-628-9454",
+    "report": "举报",
+    "block": "屏蔽",
+    "reportSent": "举报已提交，我们会尽快处理。"
+  },
+  "errors": {
+    "generic": "出错了，请稍后重试。",
+    "notFound": "找不到这个页面。",
+    "unauthorized": "请先登录。"
+  }
+}

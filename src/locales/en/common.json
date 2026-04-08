@@ -1,0 +1,84 @@
+{
+  "app": {
+    "name": "Shore Letter",
+    "tagline": "Write to a stranger. Let the tide decide.",
+    "description": "A letter, adrift toward the unknown. Someone on the other side of the sea is waiting."
+  },
+  "nav": {
+    "write": "Write",
+    "inbox": "Shore",
+    "correspondence": "Letters",
+    "profile": "Me"
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "emailLabel": "Email",
+    "emailPlaceholder": "your@email.com",
+    "sendMagicLink": "Send sign-in link",
+    "checkEmail": "Check your email and click the link to sign in.",
+    "orContinueWith": "or",
+    "createAlias": "Choose your pen name",
+    "aliasPlaceholder": "MorningFogPerson",
+    "aliasHint": "This is how others will know you. No real name needed.",
+    "uploadAvatar": "Upload a photo (optional)",
+    "avatarHint": "A pet, a place, an object — anything that feels like you.",
+    "continue": "Continue"
+  },
+  "bottle": {
+    "write": "Write a letter",
+    "promptLabel": "Today's prompt",
+    "promptSkip": "Skip prompt",
+    "contentPlaceholder": "Start writing here…",
+    "modeLabel": "How should it drift?",
+    "modeDrift": "Random drift",
+    "modeDriftDesc": "Let the waves decide",
+    "modeWednesday": "Wednesday Tide",
+    "modeWednesdayDesc": "Matched this Wednesday at 8pm",
+    "release": "Release this letter",
+    "releasing": "Releasing…",
+    "released": "Your letter is on the water.",
+    "releasedSub": "We'll let you know when someone finds it.",
+    "charCount": "{count} characters",
+    "minChars": "Write at least {min} characters"
+  },
+  "inbox": {
+    "title": "The Shore",
+    "empty": "The shore is quiet tonight.\nWrite the first letter.",
+    "newBottle": "A new letter arrived",
+    "aiKeeping": "AI companion · Waiting",
+    "aiKeepingDesc": "Your letter is still drifting. An AI friend is keeping you company.",
+    "wednesdayBanner": "Wednesday Tide",
+    "wednesdayTime": "New letters arrive tonight at 8pm",
+    "wednesdayCountdown": "{hours} hours away"
+  },
+  "correspondence": {
+    "days": "{days} days of letters",
+    "letters": "{count} letters",
+    "replyPlaceholder": "Write back…",
+    "send": "Send",
+    "seal": "Seal this correspondence",
+    "sealConfirm": "Sealing means no more letters, but your correspondence is saved forever. Seal it?",
+    "sealed": "Sealed",
+    "syncUnlocked": "Live chat is now unlocked",
+    "voiceRequest": "Invite to a voice call",
+    "giftSend": "Send a little gift",
+    "anniversary30": "You've been writing for 30 days 🎉",
+    "anniversary60": "60 days of letters ✨",
+    "anniversary90": "90 days — three months of knowing each other 💛"
+  },
+  "safety": {
+    "crisisTitle": "Need support?",
+    "crisisBody": "If you're going through something difficult, please reach out for professional help.",
+    "crisisLine": "988 Suicide & Crisis Lifeline: call or text 988",
+    "crisisLineUS": "Crisis Text Line: text HOME to 741741",
+    "report": "Report",
+    "block": "Block",
+    "reportSent": "Your report has been submitted. We'll review it soon."
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "notFound": "Page not found.",
+    "unauthorized": "Please sign in first."
+  }
+}

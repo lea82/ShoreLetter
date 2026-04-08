@@ -1,0 +1,163 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Libre Baskerville loaded via next/font in layout.tsx */
+
+:root {
+  --font-baskerville: 'Libre Baskerville', Georgia, serif;
+
+  /* Shore Letter color tokens */
+  --color-sand:      #f5f0e8;
+  --color-sand-2:    #ede6d6;
+  --color-water:     #c8dde8;
+  --color-water-2:   #9bbfd4;
+  --color-tide:      #4a8fa8;
+  --color-tide-dark: #2e6e8a;
+  --color-deep:      #1a2e3b;
+  --color-stone:     #7a8a94;
+  --color-gold:      #b8943f;
+  --color-ink:       #2c2c2c;
+  --color-ink-2:     #555555;
+}
+
+/* ── Base ── */
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-lato), system-ui, sans-serif;
+  background: var(--color-sand);
+  color: var(--color-ink);
+  line-height: 1.65;
+  min-height: 100dvh;
+}
+
+/* ── Typography utilities ── */
+.font-serif    { font-family: var(--font-baskerville), Georgia, serif; }
+.font-cn       { font-family: var(--font-noto-serif-sc), serif; }
+.font-mono     { font-family: var(--font-dm-mono), monospace; }
+
+.text-letter {
+  font-family: var(--font-baskerville), Georgia, serif;
+  font-style: italic;
+  line-height: 1.75;
+}
+
+/* ── Shore-specific components ── */
+@layer components {
+
+  /* Bottle glass aesthetic */
+  .bottle-glass {
+    background: rgba(200, 221, 232, 0.15);
+    border: 1px solid rgba(200, 221, 232, 0.3);
+    backdrop-filter: blur(8px);
+  }
+
+  /* Letter paper texture */
+  .letter-paper {
+    background: rgba(245, 240, 232, 0.95);
+    border: 1px solid rgba(180, 165, 140, 0.2);
+    box-shadow:
+      0 1px 3px rgba(0,0,0,0.04),
+      0 4px 16px rgba(0,0,0,0.06);
+  }
+
+  /* Deep mode (dark) glass */
+  .deep-glass {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* Tide button — primary CTA */
+  .btn-tide {
+    @apply bg-tide text-white font-sans font-medium
+           px-6 py-3 rounded-none
+           transition-all duration-200
+           hover:bg-tide-dark
+           active:scale-[0.98]
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* Ghost button */
+  .btn-ghost {
+    @apply border border-current text-stone-shore font-mono text-xs
+           tracking-widest uppercase px-4 py-2
+           hover:text-tide hover:border-tide
+           transition-colors duration-200;
+  }
+
+  /* Section label */
+  .section-label {
+    @apply font-mono text-[10px] tracking-[0.2em] uppercase text-tide
+           flex items-center gap-3;
+  }
+
+  .section-label::after {
+    content: '';
+    @apply block h-px w-12 bg-current opacity-30;
+  }
+
+  /* Input shore style */
+  .input-shore {
+    @apply w-full bg-transparent border-b border-stone-shore/30
+           py-2 px-0 text-ink font-serif italic
+           placeholder:text-stone-shore/50
+           focus:outline-none focus:border-tide
+           transition-colors duration-200;
+  }
+
+  /* Correspondence bubble */
+  .bubble-received {
+    @apply rounded-xl rounded-tl-sm p-4
+           bg-sand-200 border border-sand-300/50;
+  }
+
+  .bubble-sent {
+    @apply rounded-xl rounded-tr-sm p-4
+           bg-water-200/40 border border-water-300/40
+           ml-6;
+  }
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar       { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-water-2); border-radius: 2px; }
+
+/* ── Selection ── */
+::selection {
+  background: rgba(74, 143, 168, 0.2);
+  color: var(--color-deep);
+}
+
+/* ── Focus visible ── */
+:focus-visible {
+  outline: 2px solid var(--color-tide);
+  outline-offset: 2px;
+}
+
+/* ── Shore horizon decorative line ── */
+.shore-horizon {
+  position: relative;
+}
+
+.shore-horizon::after {
+  content: '';
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--color-water-2) 20%,
+    var(--color-tide) 50%,
+    var(--color-water-2) 80%,
+    transparent
+  );
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 50;
+}
