@@ -5,7 +5,7 @@ import { getMessages } from 'next-intl/server'
 import '@/styles/globals.css'
 
 const notoSerifSC = Noto_Serif_SC({
-  subsets: ['chinese-simplified'],
+  subsets: ['latin'],
   weight: ['400', '700', '900'],
   variable: '--font-noto-serif-sc',
   display: 'swap',
