@@ -40,10 +40,6 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/auth', request.url))
   }
 
-  if (pathname === '/auth' && user) {
-    return NextResponse.redirect(new URL('/shore', request.url))
-  }
-
   return response
 }
 

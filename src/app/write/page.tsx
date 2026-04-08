@@ -3,18 +3,31 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createClient } from '@/lib/supabase'
+import { useRouter } from 'next/navigation'
 
 type BottleMode = 'drift' | 'wednesday'
 
 const MIN_CHARS = 80
 const MAX_CHARS = 1200
 
-// Wave release animation overlay
+const C = {
+  sand:     '#f5f0e8',
+  tide:     '#4a8fa8',
+  tideDark: '#2e6e8a',
+  deep:     '#1a2e3b',
+  stone:    '#7a8a94',
+  water:    '#c8dde8',
+}
+
 function WaveRelease({ onComplete }: { onComplete: () => void }) {
   return (
     <motion.div
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center
-                 bg-gradient-to-b from-deep-700 to-deep-800"
+      style={{
+        position: 'fixed', inset: 0, zIndex: 50,
+        display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'center',
+        background: 'linear-gradient(180deg, #1a2e3b 0%, #0d1820 100%)',
+      }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -24,7 +37,10 @@ function WaveRelease({ onComplete }: { onComplete: () => void }) {
       {[0, 1, 2].map(i => (
         <motion.div
           key={i}
-          className="absolute rounded-full border border-water-300/30"
+          style={{
+            position: 'absolute', borderRadius: '50%',
+            border: '1px solid rgba(200,221,232,0.2)',
+          }}
           initial={{ width: 80, height: 80, opacity: 0.6 }}
           animate={{ width: 400, height: 400, opacity: 0 }}
           transition={{ delay: i * 0.3, duration: 1.4, ease: 'easeOut' }}
@@ -35,24 +51,35 @@ function WaveRelease({ onComplete }: { onComplete: () => void }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4, duration: 0.5 }}
-        className="text-center z-10"
+        style={{ textAlign: 'center', position: 'relative', zIndex: 10 }}
       >
-        {/* Bottle floating away */}
         <motion.div
           animate={{ y: [-20, -60], opacity: [1, 0] }}
           transition={{ delay: 0.3, duration: 1.2, ease: 'easeIn' }}
-          className="text-5xl mb-8 flex justify-center"
+          style={{ fontSize: 48, marginBottom: 32, display: 'flex', justifyContent: 'center' }}
         >
           🍶
         </motion.div>
 
-        <p className="font-cn font-bold text-2xl text-sand-100 mb-2">
+        <p style={{
+          fontFamily: 'var(--font-noto-serif-sc), serif',
+          fontWeight: 700, fontSize: 22,
+          color: '#f5f0e8', margin: '0 0 8px',
+        }}>
           你的信漂出去了。
         </p>
-        <p className="font-serif italic text-water-300 text-base mb-6">
+        <p style={{
+          fontFamily: 'var(--font-baskerville), Georgia, serif',
+          fontStyle: 'italic', fontSize: 15,
+          color: 'rgba(200,221,232,0.8)', margin: '0 0 20px',
+        }}>
           Your letter is on the water.
         </p>
-        <p className="font-mono text-[10px] text-water-300/60 tracking-widest uppercase">
+        <p style={{
+          fontFamily: 'var(--font-dm-mono), monospace',
+          fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase',
+          color: 'rgba(200,221,232,0.5)', margin: 0,
+        }}>
           有人找到它时，我们会通知你。
         </p>
       </motion.div>
@@ -62,9 +89,13 @@ function WaveRelease({ onComplete }: { onComplete: () => void }) {
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2 }}
         onClick={onComplete}
-        className="absolute bottom-12 font-mono text-[10px] tracking-widest
-                   uppercase text-water-300/50 hover:text-water-300
-                   transition-colors duration-200"
+        style={{
+          position: 'absolute', bottom: 48,
+          fontFamily: 'var(--font-dm-mono), monospace',
+          fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase',
+          color: 'rgba(200,221,232,0.5)', background: 'none', border: 'none',
+          cursor: 'pointer',
+        }}
       >
         返回 ↩
       </motion.button>
@@ -73,19 +104,19 @@ function WaveRelease({ onComplete }: { onComplete: () => void }) {
 }
 
 export default function WritePage() {
-  const [content, setContent]         = useState('')
-  const [mode, setMode]               = useState<BottleMode>('drift')
-  const [prompt, setPrompt]           = useState<string | null>(null)
-  const [showPrompt, setShowPrompt]   = useState(true)
-  const [releasing, setReleasing]     = useState(false)
-  const [released, setReleased]       = useState(false)
-  const [error, setError]             = useState<string | null>(null)
+  const router = useRouter()
+  const [content, setContent]       = useState('')
+  const [mode, setMode]             = useState<BottleMode>('drift')
+  const [prompt, setPrompt]         = useState<string | null>(null)
+  const [showPrompt, setShowPrompt] = useState(true)
+  const [releasing, setReleasing]   = useState(false)
+  const [released, setReleased]     = useState(false)
+  const [error, setError]           = useState<string | null>(null)
 
   const charCount   = content.length
   const isReady     = charCount >= MIN_CHARS
   const isOverLimit = charCount > MAX_CHARS
 
-  // Fetch today's prompt
   useEffect(() => {
     async function fetchPrompt() {
       const supabase = createClient()
@@ -93,11 +124,9 @@ export default function WritePage() {
         .from('daily_prompts')
         .select('prompt_zh')
         .eq('active', true)
-        .order('created_at', { ascending: false })
         .limit(10)
 
       if (data && data.length > 0) {
-        // Rotate by day of year
         const dayOfYear = Math.floor(
           (Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000
         )
@@ -114,10 +143,8 @@ export default function WritePage() {
 
     try {
       const supabase = createClient()
-
-      // Get current user profile
       const { data: { user } } = await supabase.auth.getUser()
-      if (!user) throw new Error('未登录')
+      if (!user) { router.push('/auth'); return }
 
       const { data: profile } = await supabase
         .from('profiles')
@@ -127,40 +154,41 @@ export default function WritePage() {
 
       if (!profile) throw new Error('未找到用户')
 
-      // Safety scan via API route
       const safetyRes = await fetch('/api/safety/scan', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content }),
       })
-      const safetyData = await safetyRes.json()
+      const safety = await safetyRes.json()
 
-      if (safetyData.score < 0.4) {
+      if (safety.score < 0.4) {
         setError('这封信包含不适合的内容，无法发送。')
         setReleasing(false)
         return
       }
 
-      // Insert bottle
       const { error: insertError } = await supabase
         .from('bottles')
         .insert({
-          author_id:   profile.id,
+          author_id:    profile.id,
           content,
-          prompt_used: showPrompt ? prompt : null,
+          prompt_used:  showPrompt ? prompt : null,
           mode,
-          language:    'zh',
-          safety_score: safetyData.score,
+          language:     'zh',
+          safety_score: safety.score,
         })
 
       if (insertError) throw insertError
-
       setReleased(true)
     } catch (err: any) {
       setError(err.message || '出错了，请重试。')
       setReleasing(false)
     }
   }
+
+  const serif = 'var(--font-baskerville), Georgia, serif'
+  const cn    = 'var(--font-noto-serif-sc), serif'
+  const mono  = 'var(--font-dm-mono), monospace'
 
   if (released) {
     return (
@@ -175,20 +203,31 @@ export default function WritePage() {
   }
 
   return (
-    <div className="min-h-dvh bg-gradient-to-b from-sand-100 to-sand-200
-                    flex flex-col">
+    <div style={{
+      minHeight: '100dvh',
+      background: 'linear-gradient(180deg, #f5f0e8 0%, #ede6d6 100%)',
+      display: 'flex', flexDirection: 'column',
+    }}>
       {/* Header */}
-      <header className="px-6 py-4 flex items-center justify-between
-                         border-b border-black/5">
-        <h1 className="font-cn font-bold text-deep-700 text-lg tracking-wide">
+      <header style={{
+        padding: '16px 24px',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        borderBottom: '1px solid rgba(0,0,0,0.06)',
+      }}>
+        <h1 style={{ fontFamily: cn, fontWeight: 700, fontSize: 18, color: C.deep, margin: 0 }}>
           写一封信
         </h1>
-        <span className="font-mono text-[10px] text-stone-shore tracking-wider uppercase">
+        <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: '0.15em',
+                       textTransform: 'uppercase', color: C.stone }}>
           Write
         </span>
       </header>
 
-      <div className="flex-1 flex flex-col px-6 py-6 max-w-xl mx-auto w-full gap-5">
+      <div style={{
+        flex: 1, display: 'flex', flexDirection: 'column',
+        padding: '24px', maxWidth: 560, margin: '0 auto', width: '100%', gap: 20,
+        boxSizing: 'border-box',
+      }}>
 
         {/* Prompt card */}
         <AnimatePresence>
@@ -196,22 +235,30 @@ export default function WritePage() {
             <motion.div
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, height: 0, marginBottom: 0 }}
-              className="letter-paper p-4 relative"
+              exit={{ opacity: 0, height: 0 }}
+              style={{
+                background: 'rgba(245,240,232,0.95)',
+                border: '1px solid rgba(180,165,140,0.2)',
+                padding: '16px', position: 'relative',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+              }}
             >
-              <p className="font-mono text-[9px] tracking-[0.18em] uppercase
-                            text-tide mb-2">
+              <p style={{ fontFamily: mono, fontSize: 9, letterSpacing: '0.18em',
+                          textTransform: 'uppercase', color: C.tide, margin: '0 0 8px' }}>
                 今日提示
               </p>
-              <p className="font-serif italic text-deep-700/80 text-sm
-                            leading-relaxed">
+              <p style={{ fontFamily: serif, fontStyle: 'italic', fontSize: 13,
+                          color: C.deep + 'cc', lineHeight: 1.65, margin: 0 }}>
                 {prompt}
               </p>
               <button
                 onClick={() => setShowPrompt(false)}
-                className="absolute top-3 right-3 font-mono text-[9px]
-                           text-stone-shore hover:text-tide tracking-wider
-                           transition-colors uppercase"
+                style={{
+                  position: 'absolute', top: 12, right: 12,
+                  fontFamily: mono, fontSize: 9, letterSpacing: '0.12em',
+                  textTransform: 'uppercase', color: C.stone,
+                  background: 'none', border: 'none', cursor: 'pointer',
+                }}
               >
                 跳过
               </button>
@@ -220,73 +267,68 @@ export default function WritePage() {
         </AnimatePresence>
 
         {/* Text area */}
-        <div className="flex-1 flex flex-col">
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           <textarea
             value={content}
             onChange={e => setContent(e.target.value)}
             placeholder="从这里开始写……"
             maxLength={MAX_CHARS + 100}
-            className="flex-1 w-full min-h-[280px] bg-transparent resize-none
-                       font-serif italic text-base text-deep-700
-                       placeholder:text-stone-shore/40
-                       focus:outline-none leading-relaxed
-                       border-b border-stone-shore/20 pb-4"
+            style={{
+              flex: 1, minHeight: 240, width: '100%',
+              background: 'transparent', resize: 'none',
+              fontFamily: serif, fontStyle: 'italic',
+              fontSize: 15, color: C.deep, lineHeight: 1.8,
+              border: 'none', borderBottom: '1px solid rgba(122,138,148,0.2)',
+              paddingBottom: 12, outline: 'none',
+              boxSizing: 'border-box',
+            }}
           />
 
           {/* Char count */}
-          <div className="flex justify-between items-center mt-2 py-2">
-            <span className={`font-mono text-[10px] tracking-wider
-              ${isOverLimit ? 'text-red-400' :
-                isReady ? 'text-tide' : 'text-stone-shore'}`}>
+          <div style={{ display: 'flex', justifyContent: 'space-between',
+                        padding: '8px 0', alignItems: 'center' }}>
+            <span style={{
+              fontFamily: mono, fontSize: 10, letterSpacing: '0.1em',
+              color: isOverLimit ? '#e57373' : isReady ? C.tide : C.stone,
+            }}>
               {charCount < MIN_CHARS
                 ? `还需 ${MIN_CHARS - charCount} 字`
                 : isOverLimit
                   ? `超出 ${charCount - MAX_CHARS} 字`
                   : `${charCount} 字 ✓`}
             </span>
-            <span className="font-mono text-[10px] text-stone-shore/40 tracking-wider">
-              {MAX_CHARS - charCount > 0 ? `${MAX_CHARS - charCount} 字剩余` : ''}
-            </span>
           </div>
         </div>
 
         {/* Mode selector */}
         <div>
-          <p className="font-mono text-[9px] tracking-[0.18em] uppercase
-                        text-stone-shore mb-3">
+          <p style={{ fontFamily: mono, fontSize: 9, letterSpacing: '0.18em',
+                      textTransform: 'uppercase', color: C.stone, margin: '0 0 12px' }}>
             漂流方式
           </p>
-          <div className="grid grid-cols-2 gap-2">
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
             {([
-              {
-                id:   'drift' as BottleMode,
-                cn:   '随机漂流',
-                en:   'Random drift',
-                icon: '🌊',
-                desc: '让海浪决定',
-              },
-              {
-                id:   'wednesday' as BottleMode,
-                cn:   '星期三潮汐',
-                en:   'Wednesday Tide',
-                icon: '🗓',
-                desc: '本周三晚8点',
-              },
-            ] as const).map(m => (
+              { id: 'drift' as BottleMode,     cn: '随机漂流', icon: '🌊', desc: '让海浪决定' },
+              { id: 'wednesday' as BottleMode, cn: '星期三潮汐', icon: '🗓', desc: '本周三晚8点' },
+            ]).map(m => (
               <button
                 key={m.id}
                 onClick={() => setMode(m.id)}
-                className={`p-4 border text-left transition-all duration-200
-                  ${mode === m.id
-                    ? 'border-tide bg-tide/8 text-deep-700'
-                    : 'border-stone-shore/20 text-stone-shore hover:border-tide/40'
-                  }`}
+                style={{
+                  padding: '16px', textAlign: 'left', cursor: 'pointer',
+                  border: `1px solid ${mode === m.id ? C.tide : 'rgba(122,138,148,0.2)'}`,
+                  background: mode === m.id ? 'rgba(74,143,168,0.06)' : 'transparent',
+                  transition: 'all 0.2s',
+                }}
               >
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-base">{m.icon}</span>
-                  <span className="font-cn font-bold text-sm">{m.cn}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                  <span style={{ fontSize: 16 }}>{m.icon}</span>
+                  <span style={{ fontFamily: cn, fontWeight: 700, fontSize: 13, color: C.deep }}>
+                    {m.cn}
+                  </span>
                 </div>
-                <p className="font-mono text-[9px] tracking-wider text-stone-shore uppercase">
+                <p style={{ fontFamily: mono, fontSize: 9, letterSpacing: '0.1em',
+                            color: C.stone, textTransform: 'uppercase', margin: 0 }}>
                   {m.desc}
                 </p>
               </button>
@@ -298,10 +340,9 @@ export default function WritePage() {
         <AnimatePresence>
           {error && (
             <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="font-mono text-[10px] text-red-400 tracking-wider text-center"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              style={{ fontFamily: mono, fontSize: 10, color: '#e57373',
+                       letterSpacing: '0.1em', textAlign: 'center', margin: 0 }}
             >
               {error}
             </motion.p>
@@ -309,17 +350,24 @@ export default function WritePage() {
         </AnimatePresence>
 
         {/* Release button */}
-        <motion.button
+        <button
           onClick={handleRelease}
           disabled={!isReady || isOverLimit || releasing}
-          whileTap={{ scale: 0.98 }}
-          className={`btn-tide w-full font-cn text-base tracking-widest py-4
-            ${(!isReady || isOverLimit) ? 'opacity-40 cursor-not-allowed' : ''}`}
+          style={{
+            background: (!isReady || isOverLimit) ? C.stone : C.tide,
+            color: 'white', border: 'none',
+            padding: '16px 24px', width: '100%',
+            fontFamily: cn, fontSize: 15, letterSpacing: '0.1em',
+            cursor: (!isReady || isOverLimit || releasing) ? 'not-allowed' : 'pointer',
+            opacity: (!isReady || isOverLimit) ? 0.5 : 1,
+            transition: 'all 0.2s',
+          }}
         >
           {releasing ? '放漂中…' : '放漂这封信 ↗'}
-        </motion.button>
+        </button>
 
-        <p className="font-serif italic text-center text-[11px] text-stone-shore/60">
+        <p style={{ fontFamily: serif, fontStyle: 'italic', textAlign: 'center',
+                    fontSize: 11, color: C.stone + '80', margin: 0 }}>
           Release this letter
         </p>
 
