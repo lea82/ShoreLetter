@@ -128,7 +128,7 @@ export default function ProfilePage() {
               </p>
               <p style={{ fontFamily: mono, fontSize: 9, letterSpacing: '0.12em',
                           textTransform: 'uppercase', color: C.stone, margin: 0 }}>
-                {profile?.tier === 'plus' ? '岸信+ · Shore+' : '免费版 · Free'}
+                {profile?.tier === 'plus' ? '岸信+ · Shore+' : '免费版 · Free version'}
               </p>
             </div>
           </motion.div>
