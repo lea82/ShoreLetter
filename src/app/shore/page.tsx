@@ -201,7 +201,7 @@ function EmptyShore() {
         padding: '14px 32px',
         fontFamily: cn, fontSize: 14, letterSpacing: '0.1em',
       }}>
-        写第一封信
+        写一封信
       </Link>
     </div>
   )
