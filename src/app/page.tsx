@@ -49,18 +49,7 @@ const features = [
 ]
 
 export default function LandingPage() {
-  const [email, setEmail]         = useState('')
-  const [submitted, setSubmitted] = useState(false)
-  const [loading, setLoading]     = useState(false)
-
-  async function handleWaitlist(e: React.FormEvent) {
-    e.preventDefault()
-    if (!email) return
-    setLoading(true)
-    await new Promise(r => setTimeout(r, 800))
-    setSubmitted(true)
-    setLoading(false)
-  }
+  
 
   const serif   = 'var(--font-baskerville), Georgia, serif'
   const cn      = 'var(--font-noto-serif-sc), serif'
@@ -154,64 +143,30 @@ export default function LandingPage() {
         >
           Write to a stranger. Let the tide decide.
         </motion.p>
-
-        {/* Waitlist */}
+        {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.56, duration: 0.5 }}
-          style={{ width: '100%' }}
+          style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 10 }}
         >
-          {!submitted ? (
-            <form onSubmit={handleWaitlist} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <input
-                type="email" value={email} onChange={e => setEmail(e.target.value)}
-                placeholder="你的邮箱 · your@email.com" required
-                style={{
-                  width: '100%', background: 'transparent', border: 'none',
-                  borderBottom: `1px solid ${C.stone}50`,
-                  padding: '10px 0',
-                  fontFamily: serif, fontStyle: 'italic', fontSize: 15,
-                  color: C.deep, textAlign: 'center', outline: 'none', boxSizing: 'border-box',
-                }}
-              />
-              <button
-                type="submit" disabled={loading}
-                style={{
-                  background: loading ? C.stone : C.tide, color: 'white', border: 'none',
-                  padding: '14px 24px', width: '100%',
-                  fontFamily: cn, fontSize: 15, letterSpacing: '0.1em',
-                  cursor: loading ? 'not-allowed' : 'pointer',
-                }}
-              >
-                {loading ? '提交中…' : '加入等待列表'}
-              </button>
-              <p style={{
-                fontFamily: mono, fontSize: 9, letterSpacing: '0.15em',
-                textTransform: 'uppercase', color: C.stone + '80',
-                textAlign: 'center', margin: 0,
-              }}>
-                邀请制内测 · Invitation-only beta
-              </p>
-            </form>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }}
-              style={{
-                background: 'rgba(245,240,232,0.95)',
-                border: '1px solid rgba(180,165,140,0.2)',
-                padding: 24, textAlign: 'center',
-              }}
-            >
-              <p style={{ fontFamily: serif, fontStyle: 'italic', fontSize: 16, color: C.deep, marginBottom: 8 }}>
-                已收到，谢谢你。
-              </p>
-              <p style={{ fontFamily: mono, fontSize: 9, letterSpacing: '0.15em', color: C.stone, margin: 0 }}>
-                等潮水准备好，邀请会找到你。
-              </p>
-            </motion.div>
-          )}
+          <Link href="/auth" style={{
+            display: 'block', textAlign: 'center',
+            background: C.tide, color: 'white',
+            padding: '14px 24px', textDecoration: 'none',
+            fontFamily: cn, fontSize: 15, letterSpacing: '0.1em',
+          }}>
+            开始漂流 →
+          </Link>
+          <p style={{
+            fontFamily: mono, fontSize: 9, letterSpacing: '0.15em',
+            textTransform: 'uppercase', color: C.stone + '80',
+            textAlign: 'center', margin: 0,
+          }}>
+            让你的话 · 找到愿意听的人
+          </p>
         </motion.div>
       </section>
+        
 
       {/* DIVIDER */}
       <div style={{ maxWidth: 720, margin: '0 auto', padding: '0 24px' }}>
