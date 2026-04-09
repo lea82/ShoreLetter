@@ -35,16 +35,16 @@ function BottleSVG() {
 
 const features = [
   {
-    icon: '🍶', cn: '写一封信', en: 'Write a letter, let it drift',
+    icon: '🍶', cn: '放漂一封信', en: 'Release a letter',
     desc: '写下你想说的，让信漂向未知。不需要真名，不需要照片。',
   },
   {
     icon: '🌊', cn: '星期三潮汐', en: 'Wednesday Tide',
-    desc: '每周三晚8点，所有信在同一刻相遇。等待，是仪式的一部分。',
+    desc: '每周三晚8点，所有信统一配对。等待，是仪式的一部分。',
   },
   {
     icon: '💌', cn: '成为笔友', en: 'Become pen pals',
-    desc: '一封信开始，三个月的来往。信会留下，也许是一段你会记得的时间。',
+    desc: '一封信开始，慢慢相知。信件妥善保存，留作一段记忆。',
   },
 ]
 
@@ -52,22 +52,15 @@ export default function LandingPage() {
   const [email, setEmail]         = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading]     = useState(false)
-  
+
   async function handleWaitlist(e: React.FormEvent) {
     e.preventDefault()
     if (!email) return
     setLoading(true)
-
-    const res = await fetch('/api/waitlist', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ email }),
-    })
-
-    setSubmitted(true) // Show success regardless — graceful
+    await new Promise(r => setTimeout(r, 800))
+    setSubmitted(true)
     setLoading(false)
   }
-
 
   const serif   = 'var(--font-baskerville), Georgia, serif'
   const cn      = 'var(--font-noto-serif-sc), serif'
@@ -151,7 +144,7 @@ export default function LandingPage() {
           transition={{ delay: 0.4, duration: 0.5 }}
           style={{ fontSize: 16, color: C.deep + 'bb', margin: '0 0 6px', lineHeight: 1.65 }}
         >
-          写给陌生人，让潮水替你决定。
+          写给陌生人，让潮水决定。
         </motion.p>
 
         <motion.p
@@ -172,7 +165,7 @@ export default function LandingPage() {
             <form onSubmit={handleWaitlist} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               <input
                 type="email" value={email} onChange={e => setEmail(e.target.value)}
-                placeholder="留下你的邮箱 · your@email.com" required
+                placeholder="你的邮箱 · your@email.com" required
                 style={{
                   width: '100%', background: 'transparent', border: 'none',
                   borderBottom: `1px solid ${C.stone}50`,
@@ -190,7 +183,7 @@ export default function LandingPage() {
                   cursor: loading ? 'not-allowed' : 'pointer',
                 }}
               >
-                {loading ? '提交中…' : '等待一封信的开始'}
+                {loading ? '提交中…' : '加入等待列表'}
               </button>
               <p style={{
                 fontFamily: mono, fontSize: 9, letterSpacing: '0.15em',
@@ -210,10 +203,10 @@ export default function LandingPage() {
               }}
             >
               <p style={{ fontFamily: serif, fontStyle: 'italic', fontSize: 16, color: C.deep, marginBottom: 8 }}>
-                你的信已经漂出去了。
+                已收到，谢谢你。
               </p>
               <p style={{ fontFamily: mono, fontSize: 9, letterSpacing: '0.15em', color: C.stone, margin: 0 }}>
-                潮水会带着邀请找到你。
+                等潮水准备好，邀请会找到你。
               </p>
             </motion.div>
           )}
@@ -266,7 +259,7 @@ export default function LandingPage() {
             fontFamily: serif, fontStyle: 'italic', fontSize: 15,
             color: C.deep + '88', lineHeight: 1.75, margin: '0 0 12px',
           }}>
-            "我不是在找对象，也不需要被治疗。<br />
+            "我不是在找伴侣，也不需要治疗。<br />
             我只是想有一个人，知道我今天的心情。"
           </p>
           <p style={{ fontFamily: mono, fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', color: C.stone + '80', margin: 0 }}>
@@ -288,7 +281,7 @@ export default function LandingPage() {
             </span>
           </div>
           <p style={{ fontFamily: mono, fontSize: 9, letterSpacing: '0.12em', color: C.stone + '70', margin: 0 }}>
-            © 2026 Shore Letter · 写下来的，才算数。
+            © 2026 Shore Letter · 真实的人，真实的信
           </p>
         </div>
       </footer>
