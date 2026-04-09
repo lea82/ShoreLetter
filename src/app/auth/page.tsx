@@ -5,11 +5,23 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { createClient } from '@/lib/supabase'
 import Link from 'next/link'
 
+const C = {
+  sand:     '#f5f0e8',
+  tide:     '#4a8fa8',
+  tideDark: '#2e6e8a',
+  deep:     '#1a2e3b',
+  stone:    '#7a8a94',
+}
+
+const serif = 'var(--font-baskerville), Georgia, serif'
+const cn    = 'var(--font-noto-serif-sc), serif'
+const mono  = 'var(--font-dm-mono), monospace'
+
 export default function AuthPage() {
-  const [email, setEmail]       = useState('')
-  const [sent, setSent]         = useState(false)
-  const [loading, setLoading]   = useState(false)
-  const [error, setError]       = useState<string | null>(null)
+  const [email, setEmail]     = useState('')
+  const [sent, setSent]       = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError]     = useState<string | null>(null)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -37,15 +49,21 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="min-h-dvh bg-gradient-to-b from-sand-100 to-water-100
-                    flex flex-col items-center justify-center px-6">
+    <div style={{
+      minHeight: '100dvh',
+      background: 'linear-gradient(180deg, #f5f0e8 0%, #ddeaf2 100%)',
+      display: 'flex', flexDirection: 'column',
+      alignItems: 'center', justifyContent: 'center',
+      padding: '24px', position: 'relative',
+    }}>
 
       {/* Back */}
-      <Link
-        href="/"
-        className="absolute top-6 left-6 font-mono text-[10px] tracking-widest
-                   uppercase text-stone-shore hover:text-tide transition-colors"
-      >
+      <Link href="/" style={{
+        position: 'absolute', top: 24, left: 24,
+        fontFamily: mono, fontSize: 10, letterSpacing: '0.15em',
+        textTransform: 'uppercase', color: C.stone,
+        textDecoration: 'none',
+      }}>
         ← 返回
       </Link>
 
@@ -53,12 +71,18 @@ export default function AuthPage() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-sm"
+        style={{ width: '100%', maxWidth: 360 }}
       >
         {/* Brand */}
-        <div className="text-center mb-10">
-          <h1 className="font-cn font-black text-4xl text-deep-700 mb-2">岸信</h1>
-          <p className="font-serif italic text-stone-shore text-sm">Shore Letter</p>
+        <div style={{ textAlign: 'center', marginBottom: 40 }}>
+          <h1 style={{ fontFamily: cn, fontWeight: 900, fontSize: 40,
+                       color: C.deep, margin: '0 0 6px', letterSpacing: '0.04em' }}>
+            岸信
+          </h1>
+          <p style={{ fontFamily: serif, fontStyle: 'italic',
+                      fontSize: 14, color: C.stone, margin: 0 }}>
+            Shore Letter
+          </p>
         </div>
 
         <AnimatePresence mode="wait">
@@ -69,27 +93,36 @@ export default function AuthPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <p className="font-cn text-center text-deep-700/70 text-sm mb-8 leading-relaxed">
-                输入邮箱，我们发送一个登录链接。<br />
-                <span className="font-serif italic text-stone-shore text-xs">
+              <p style={{ fontFamily: cn, textAlign: 'center', fontSize: 14,
+                          color: C.deep + 'bb', margin: '0 0 32px',
+                          lineHeight: 1.8 }}>
+                输入邮箱，我们发送一个登录链接。<br/>
+                <span style={{ fontFamily: serif, fontStyle: 'italic',
+                               fontSize: 12, color: C.stone }}>
                   No password needed.
                 </span>
               </p>
 
-              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              <form onSubmit={handleSubmit}
+                    style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                 <div>
-                  <label className="font-mono text-[9px] tracking-[0.2em] uppercase
-                                    text-stone-shore block mb-2">
+                  <label style={{ fontFamily: mono, fontSize: 9,
+                                  letterSpacing: '0.2em', textTransform: 'uppercase',
+                                  color: C.stone, display: 'block', marginBottom: 8 }}>
                     邮箱 · Email
                   </label>
                   <input
-                    type="email"
-                    value={email}
+                    type="email" value={email}
                     onChange={e => setEmail(e.target.value)}
                     placeholder="your@email.com"
-                    required
-                    autoFocus
-                    className="input-shore w-full text-base"
+                    required autoFocus
+                    style={{
+                      width: '100%', background: 'transparent',
+                      border: 'none', borderBottom: `1px solid ${C.stone}50`,
+                      padding: '10px 0',
+                      fontFamily: serif, fontStyle: 'italic', fontSize: 16,
+                      color: C.deep, outline: 'none', boxSizing: 'border-box',
+                    }}
                   />
                 </div>
 
@@ -99,7 +132,8 @@ export default function AuthPage() {
                       initial={{ opacity: 0, y: -4 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0 }}
-                      className="font-mono text-[10px] text-red-400 tracking-wider"
+                      style={{ fontFamily: mono, fontSize: 10,
+                               color: '#e57373', letterSpacing: '0.08em', margin: 0 }}
                     >
                       {error}
                     </motion.p>
@@ -107,17 +141,25 @@ export default function AuthPage() {
                 </AnimatePresence>
 
                 <button
-                  type="submit"
-                  disabled={loading || !email}
-                  className="btn-tide w-full font-cn tracking-widest mt-2"
+                  type="submit" disabled={loading || !email}
+                  style={{
+                    background: (loading || !email) ? C.stone : C.tide,
+                    color: 'white', border: 'none',
+                    padding: '14px 24px', width: '100%',
+                    fontFamily: cn, fontSize: 15, letterSpacing: '0.1em',
+                    cursor: (loading || !email) ? 'not-allowed' : 'pointer',
+                    opacity: !email ? 0.5 : 1,
+                    marginTop: 8,
+                  }}
                 >
                   {loading ? '发送中…' : '发送登录链接'}
                 </button>
               </form>
 
-              <p className="font-mono text-[9px] text-stone-shore/50 text-center
-                            tracking-wider mt-6 leading-relaxed">
-                登录即表示同意《用户协议》和《隐私政策》<br/>
+              <p style={{ fontFamily: mono, fontSize: 9, color: C.stone + '60',
+                          textAlign: 'center', letterSpacing: '0.1em',
+                          marginTop: 24, lineHeight: 1.8 }}>
+                登录即表示同意用户协议和隐私政策<br/>
                 你的邮箱不会显示给任何其他用户。
               </p>
             </motion.div>
@@ -127,24 +169,35 @@ export default function AuthPage() {
               key="sent"
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="letter-paper p-8 text-center"
+              style={{
+                background: 'rgba(245,240,232,0.95)',
+                border: '1px solid rgba(180,165,140,0.2)',
+                padding: 32, textAlign: 'center',
+                boxShadow: '0 4px 16px rgba(0,0,0,0.06)',
+              }}
             >
-              <div className="text-4xl mb-4">✉️</div>
-              <p className="font-cn font-bold text-deep-700 text-lg mb-2">
+              <div style={{ fontSize: 36, marginBottom: 16 }}>✉️</div>
+              <p style={{ fontFamily: cn, fontWeight: 700, fontSize: 18,
+                          color: C.deep, margin: '0 0 8px' }}>
                 登录链接已发送
               </p>
-              <p className="font-serif italic text-stone-shore text-sm mb-4
-                            leading-relaxed">
+              <p style={{ fontFamily: serif, fontStyle: 'italic', fontSize: 13,
+                          color: C.stone, margin: '0 0 16px', lineHeight: 1.8 }}>
                 请查收邮件，点击链接登录。<br/>
                 Check your inbox and click the link.
               </p>
-              <p className="font-mono text-[10px] text-stone-shore/60 tracking-wider">
+              <p style={{ fontFamily: mono, fontSize: 11,
+                          color: C.stone + '80', margin: '0 0 20px',
+                          letterSpacing: '0.08em' }}>
                 {email}
               </p>
               <button
                 onClick={() => { setSent(false); setEmail('') }}
-                className="mt-6 font-mono text-[9px] tracking-widest uppercase
-                           text-stone-shore hover:text-tide transition-colors"
+                style={{
+                  background: 'none', border: 'none', cursor: 'pointer',
+                  fontFamily: mono, fontSize: 9, letterSpacing: '0.15em',
+                  textTransform: 'uppercase', color: C.stone,
+                }}
               >
                 重新发送
               </button>
