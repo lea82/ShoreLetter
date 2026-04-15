@@ -20,12 +20,13 @@ const supabase = createClient(
  * 5. Not already in active correspondence together
  */
 export async function POST(req: NextRequest) {
+  //temporarily disabled for manual beta testing  
   // Verify this is called by Inngest or internal admin
-  const authHeader = req.headers.get('authorization')
-  if (authHeader !== `Bearer ${process.env.INNGEST_SIGNING_KEY}` &&
-      authHeader !== `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  //const authHeader = req.headers.get('authorization')
+  //if (authHeader !== `Bearer ${process.env.INNGEST_SIGNING_KEY}` &&
+      //authHeader !== `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`) {
+    //return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  //}
 
   const tideDate = new Date().toISOString().split('T')[0]
 
