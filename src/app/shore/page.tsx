@@ -332,7 +332,7 @@ export default function ShorePage() {
         )}
       </div>
 
-      <BottomNav />
+      <BottomNav active="shore" />
     </div>
   )
 }
