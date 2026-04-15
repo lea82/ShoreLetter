@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
   const tideDate = new Date().toISOString().split('T')[0]
 
   try {
-    // 1. Get all bottles in wednesday mode that are still drifting
+    // 1. Get all bottles in drifting status 
     const { data: bottles, error: bottlesError } = await supabase
       .from('bottles')
       .select(`
@@ -40,10 +40,10 @@ export async function POST(req: NextRequest) {
           id, alias, vibe_tags, write_time, trust_score, tier
         )
       `)
-      .eq('mode', 'wednesday')
+      //.eq('mode', 'wednesday')
       .eq('status', 'drifting')
       .eq('safety_flagged', false)
-      .gte('profiles.trust_score', 10)
+      //.gte('profiles.trust_score', 10)
 
     if (bottlesError) throw bottlesError
     if (!bottles || bottles.length < 2) {
